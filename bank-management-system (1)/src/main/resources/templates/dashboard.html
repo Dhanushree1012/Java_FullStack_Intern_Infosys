@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Dashboard - SB Bank</title><link rel="stylesheet" th:href="@{/style.css}"></head>
+<body>
+<nav>
+    <b>SB Bank</b>
+    <form th:action="@{/logout}" method="post">
+        <span th:text="'Hello, ' + ${account.user.fullName}"></span>
+        <button class="link" type="submit">Logout</button>
+    </form>
+</nav>
+<main>
+    <div class="ok" th:if="${success}" th:text="${success}"></div>
+    <div class="err" th:if="${error}" th:text="${error}"></div>
+
+    <div class="card balance">
+        <div>Account No: <b th:text="${account.accountNumber}"></b></div>
+        <h1 th:text="'₹ ' + ${#numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT')}"></h1>
+        <small>Available balance</small>
+    </div>
+
+    <div class="grid">
+        <div class="card"><h3>Deposit</h3>
+            <form th:action="@{/deposit}" method="post">
+                <input type="number" name="amount" step="0.01" min="1" placeholder="Amount" required>
+                <button>Deposit</button></form></div>
+        <div class="card"><h3>Withdraw</h3>
+            <form th:action="@{/withdraw}" method="post">
+                <input type="number" name="amount" step="0.01" min="1" placeholder="Amount" required>
+                <button>Withdraw</button></form></div>
+        <div class="card"><h3>Transfer</h3>
+            <form th:action="@{/transfer}" method="post">
+                <input name="toAccount" placeholder="Recipient account no." required>
+                <input type="number" name="amount" step="0.01" min="1" placeholder="Amount" required>
+                <button>Send</button></form></div>
+    </div>
+
+    <div class="card">
+        <h3>Transaction History</h3>
+        <table>
+            <tr><th>Date</th><th>Type</th><th>Details</th><th>Amount</th></tr>
+            <tr th:each="t : ${transactions}">
+                <td th:text="${#temporals.format(t.createdAt, 'dd MMM yyyy HH:mm')}"></td>
+                <td th:text="${t.type}"></td>
+                <td th:text="${t.description}"></td>
+                <td th:class="${t.type == 'DEPOSIT' or t.type == 'TRANSFER_IN'} ? 'in' : 'out'"
+                    th:text="${(t.type == 'DEPOSIT' or t.type == 'TRANSFER_IN') ? '+' : '-'} + ${#numbers.formatDecimal(t.amount, 1, 'COMMA', 2, 'POINT')}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(transactions)}"><td colspan="4">No transactions yet</td></tr>
+        </table>
+    </div>
+</main>
+</body></html>

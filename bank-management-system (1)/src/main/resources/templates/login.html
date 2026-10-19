@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Login - SB Bank</title><link rel="stylesheet" th:href="@{/style.css}"></head>
+<body>
+<div class="card auth">
+    <h2>SB Bank Login</h2>
+    <div class="err" th:if="${param.error}">Invalid username or password</div>
+    <div class="ok" th:if="${param.logout}">You have been logged out</div>
+    <div class="ok" th:if="${param.registered}">Registered! Please log in.</div>
+    <form th:action="@{/login}" method="post">
+        <label>Username</label><input name="username" required autofocus>
+        <label>Password</label><input type="password" name="password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p>New customer? <a th:href="@{/register}">Open an account</a></p>
+</div>
+</body></html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Admin - SB Bank</title><link rel="stylesheet" th:href="@{/style.css}"></head>
+<body>
+<nav>
+    <b>SB Bank - Admin Panel</b>
+    <form th:action="@{/logout}" method="post"><button class="link" type="submit">Logout</button></form>
+</nav>
+<main>
+    <div class="card">
+        <h3>All Customers (<span th:text="${#lists.size(customers)}"></span>)</h3>
+        <table>
+            <tr><th>Name</th><th>Username</th><th>Email</th><th>Account No.</th><th>Balance</th></tr>
+            <tr th:each="u : ${customers}">
+                <td th:text="${u.fullName}"></td>
+                <td th:text="${u.username}"></td>
+                <td th:text="${u.email}"></td>
+                <td th:text="${u.account.accountNumber}"></td>
+                <td th:text="'₹ ' + ${#numbers.formatDecimal(u.account.balance, 1, 'COMMA', 2, 'POINT')}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(customers)}"><td colspan="5">No customers yet</td></tr>
+        </table>
+    </div>
+</main>
+</body></html>

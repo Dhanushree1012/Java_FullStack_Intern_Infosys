@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Register - SB Bank</title><link rel="stylesheet" th:href="@{/style.css}"></head>
+<body>
+<div class="card auth">
+    <h2>Open an Account</h2>
+    <div class="err" th:if="${error}" th:text="${error}"></div>
+    <form th:action="@{/register}" method="post">
+        <label>Full name</label><input name="fullName" required>
+        <label>Email</label><input type="email" name="email" required>
+        <label>Username</label><input name="username" required>
+        <label>Password (min 6 chars)</label><input type="password" name="password" minlength="6" required>
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a th:href="@{/login}">Login</a></p>
+</div>
+</body></html>
